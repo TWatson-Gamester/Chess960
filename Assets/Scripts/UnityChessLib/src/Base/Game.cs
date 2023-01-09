@@ -11,7 +11,7 @@ namespace UnityChess {
 		/// <summary>Creates a Game instance of a given mode with a standard starting Board.</summary>
 		//public Game() : this(GameConditions.NormalStartingConditions, Board.StartingPositionPieces) { }
 
-        public Game() : this(GameConditions.NormalStartingConditions, Board.RandomStart()) { }
+        //public Game() : this(GameConditions.NormalStartingConditions, Board.RandomStart()) { }
 
 		public Game(GameConditions startingConditions, params (Square, Piece)[] squarePiecePairs) {
 			Board startingBoard = new Board(squarePiecePairs);

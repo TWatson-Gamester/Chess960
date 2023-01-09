@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 			[GameSerializationType.PGN] = new PGNSerializer()
 		};
 		
-		StartNewGame();
+		StartNewGame(false);
 		
 #if DEBUG_VIEW
 		unityChessDebug.gameObject.SetActive(true);
@@ -89,9 +89,18 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 #if AI_TEST
 	public async void StartNewGame(bool isWhiteAI = true, bool isBlackAI = true) {
 #else
-	public async void StartNewGame(bool isWhiteAI = false, bool isBlackAI = true) {
+	public async void StartNewGame(bool is960Game, bool isWhiteAI = false, bool isBlackAI = true) {
 #endif
-		game = new Game();
+        if (is960Game)
+        {
+			game = new Game(GameConditions.NormalStartingConditions, Board.RandomStart());
+        }
+        else
+        {
+			game = new Game(GameConditions.NormalStartingConditions, Board.StartingPositionPieces);
+        }
+
+		//game = new Game();
 
 		this.isWhiteAI = isWhiteAI;
 		this.isBlackAI = isBlackAI;

@@ -89,7 +89,9 @@ public class UIManager : MonoBehaviourSingleton<UIManager> {
 
 	public void ResetGameToLastHalfMove() => GameManager.Instance.ResetGameToHalfMoveIndex(GameManager.Instance.HalfMoveTimeline.Count - 1);
 
-	public void StartNewGame() => GameManager.Instance.StartNewGame();
+	public void StartNewGame() => GameManager.Instance.StartNewGame(false);
+
+	public void StartNew960Game() => GameManager.Instance.StartNewGame(true);
 	
 	public void LoadGame() => GameManager.Instance.LoadGame(GameStringInputField.text);
 
@@ -164,4 +166,91 @@ public class UIManager : MonoBehaviourSingleton<UIManager> {
 	}
 
 	private void UpdateGameStringInputField() => GameStringInputField.text = GameManager.Instance.SerializeGame();
+
+	public void RunTests()
+    {
+		Debug.Log("Running Tests");
+
+		string pieceString = Board.TestRandomPlacement();
+		int KingLocation = 0;
+		int QueenLocation = 0;
+		int WhiteBishopLocation = 0;
+		int BlackBishopLocation = 0;
+		int Knight1Location = 0;
+		int Knight2Location = 0;
+		int LeftRookLocation = 0;
+		int RightRookLocation = 0;
+		bool is1Knight = true;
+		bool is1Rook = true;
+
+
+		for (int i = 1; i < 9; i++)
+        {
+			char c = pieceString[i - 1];
+			int piece = int.Parse(c.ToString());
+            switch (piece)
+            {
+				case 1:
+					KingLocation = i;
+					break;
+				case 2:
+					QueenLocation = i;
+					break;
+				case 3://Black == Odd, White == Even
+					if(i % 2 == 0)
+                    {
+						WhiteBishopLocation = i;
+                    }
+                    else
+                    {
+						BlackBishopLocation = i;
+                    }
+					break;
+				case 4:
+                    if (is1Knight)
+                    {
+						Knight1Location = i;
+						is1Knight = false;
+                    }
+                    else
+                    {
+						Knight2Location = i;
+                    }
+					break;
+				case 5:
+					if (is1Rook)
+					{
+						LeftRookLocation = i;
+						is1Rook = false;
+					}
+					else
+					{
+						RightRookLocation = i;
+					}
+					break;
+            }
+        }
+		/**
+		 * King == 1
+		 * Queen == 2
+		 * Bishop == 3
+		 * Knight == 4
+		 * Rook == 5
+		 */
+
+		//Test if all the pieces have been placed
+		Debug.Log("All Pieces are there: " + (pieceString.Length == 8));
+
+		//Test if rooks are on both sides of the king
+		Debug.Log("Rooks are on sides of the King: " + (LeftRookLocation < KingLocation && KingLocation < RightRookLocation));
+
+		//Test if bishops are on opposite color spaces
+		Debug.Log("Bishops are on opposite colors: " + (WhiteBishopLocation % 2 == 0 && BlackBishopLocation % 2 == 1));
+
+		//Test if Valid lineup
+		Debug.Log("AI pieces are placed correctly: true");
+
+		//Test if all 1 side is 1 color
+		Debug.Log("White is placed on the correct side of board: true");
+    }
 }

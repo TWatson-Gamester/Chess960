@@ -64,19 +64,129 @@ namespace UnityChess {
 			currentKingSquareBySide[Side.Black] = null;
 		}
 
-		public static (Square, Piece)[] RandomStart()
-        {
+		public static string TestRandomPlacement()
+		{
 			//Place the king at a random position from b1 - g1
-			int kingLocation = new Random().Next(2, 7);
+			int kingLocation = new Random().Next(2, 8);
 
 			//Places the rooks at a random position on both sides of the King
-			int leftRookLocation = new Random().Next(1, kingLocation - 1);
-			int rightRookLocation = new Random().Next(kingLocation + 1, 8);
+			int leftRookLocation = new Random().Next(1, kingLocation);
+			int rightRookLocation = new Random().Next(kingLocation + 1, 9);
 
 			//Places the bishops at random spots but making sure that they are only on white & black places
 			bool canContinue = false;
-			int bishop1Random = new Random().Next(1, 4);
-			int bishop2Random = new Random().Next(1, 4);
+			int bishop1Random = new Random().Next(1, 5);
+			int bishop2Random = new Random().Next(1, 5);
+			int whiteBishopLocation = 0;
+			int blackBishopLocation = 0;
+			while (!canContinue)
+			{
+				switch (bishop1Random)
+				{
+					case 1:
+						whiteBishopLocation = 2;
+						break;
+					case 2:
+						whiteBishopLocation = 4;
+						break;
+					case 3:
+						whiteBishopLocation = 6;
+						break;
+					case 4:
+						whiteBishopLocation = 8;
+						break;
+				}
+				switch (bishop1Random)
+				{
+					case 1:
+						blackBishopLocation = 1;
+						break;
+					case 2:
+						blackBishopLocation = 3;
+						break;
+					case 3:
+						blackBishopLocation = 5;
+						break;
+					case 4:
+						blackBishopLocation = 7;
+						break;
+				}
+
+				if (whiteBishopLocation != kingLocation && whiteBishopLocation != leftRookLocation && whiteBishopLocation != rightRookLocation) canContinue = true;
+				else
+				{
+					bishop1Random = new Random().Next(1, 4);
+					canContinue = false;
+				}
+
+				if (blackBishopLocation != kingLocation && blackBishopLocation != leftRookLocation && blackBishopLocation != rightRookLocation) canContinue = true;
+				else
+				{
+					bishop2Random = new Random().Next(1, 4);
+					canContinue = false;
+				}
+			}
+
+			//Places Queen on a random space
+			canContinue = false;
+			int queenLocation = 0;
+			while (!canContinue)
+			{
+				queenLocation = new Random().Next(1, 9);
+				if (queenLocation != kingLocation && queenLocation != leftRookLocation && queenLocation != rightRookLocation && queenLocation != whiteBishopLocation && queenLocation != blackBishopLocation) canContinue = true;
+			}
+			canContinue = false;
+
+			//Places the Knights on the last 2 remaining spaces
+			int knight1Location = 0;
+			while (!canContinue)
+			{
+				knight1Location = new Random().Next(1, 9);
+				if (knight1Location != kingLocation && knight1Location != leftRookLocation && knight1Location != rightRookLocation && knight1Location != whiteBishopLocation && knight1Location != blackBishopLocation && knight1Location != queenLocation) canContinue = true;
+			}
+			canContinue = false;
+			int knight2Location = 0;
+			while (!canContinue)
+			{
+				knight2Location = new Random().Next(1, 9);
+				if (knight2Location != kingLocation && knight2Location != leftRookLocation && knight2Location != rightRookLocation && knight2Location != whiteBishopLocation && knight2Location != blackBishopLocation && knight2Location != queenLocation && knight2Location != knight1Location) canContinue = true;
+			}
+
+			char[] stringBuilder = new char[8];
+			/**
+			 * King == 1
+			 * Queen == 2
+			 * Bishop == 3
+			 * Knight == 4
+			 * Rook == 5
+			 */
+			stringBuilder[kingLocation - 1] = '1';
+			stringBuilder[queenLocation - 1] = '2';
+			stringBuilder[whiteBishopLocation - 1] = '3';
+			stringBuilder[blackBishopLocation - 1] = '3';
+			stringBuilder[knight1Location - 1] = '4';
+			stringBuilder[knight2Location - 1] = '4';
+			stringBuilder[leftRookLocation - 1] = '5';
+			stringBuilder[rightRookLocation - 1] = '5';
+
+			string returnString = "";
+			foreach (char c in stringBuilder) returnString += c;
+			return returnString;
+        }
+
+		public static (Square, Piece)[] RandomStart()
+        {
+			//Place the king at a random position from b1 - g1
+			int kingLocation = new Random().Next(2, 8);
+
+			//Places the rooks at a random position on both sides of the King
+			int leftRookLocation = new Random().Next(1, kingLocation);
+			int rightRookLocation = new Random().Next(kingLocation + 1, 9);
+
+			//Places the bishops at random spots but making sure that they are only on white & black places
+			bool canContinue = false;
+			int bishop1Random = new Random().Next(1, 5);
+			int bishop2Random = new Random().Next(1, 5);
 			int whiteBishopLocation = 0;
 			int blackBishopLocation = 0;
 			while (!canContinue)
@@ -112,14 +222,14 @@ namespace UnityChess {
 						break;
 				}
 
-				if (bishop1Random != kingLocation && bishop1Random != leftRookLocation && bishop1Random != rightRookLocation) canContinue = true;
+				if (whiteBishopLocation != kingLocation && whiteBishopLocation != leftRookLocation && whiteBishopLocation != rightRookLocation) canContinue = true;
 				else
 				{
 					bishop1Random = new Random().Next(1, 4);
 					canContinue = false;
 				}
 
-				if (bishop2Random != kingLocation && bishop2Random != leftRookLocation && bishop2Random != rightRookLocation) canContinue = true;
+				if (blackBishopLocation != kingLocation && blackBishopLocation != leftRookLocation && blackBishopLocation != rightRookLocation) canContinue = true;
 				else
 				{
 					bishop2Random = new Random().Next(1, 4);
@@ -132,7 +242,7 @@ namespace UnityChess {
 			int queenLocation = 0;
 			while (!canContinue)
             {
-				queenLocation = new Random().Next(1, 8);
+				queenLocation = new Random().Next(1, 9);
 				if (queenLocation != kingLocation && queenLocation != leftRookLocation && queenLocation != rightRookLocation && queenLocation != whiteBishopLocation && queenLocation != blackBishopLocation) canContinue = true;
             }
 			canContinue = false;
@@ -141,14 +251,14 @@ namespace UnityChess {
 			int knight1Location = 0;
 			while (!canContinue)
 			{
-				knight1Location = new Random().Next(1, 8);
+				knight1Location = new Random().Next(1, 9);
 				if (knight1Location != kingLocation && knight1Location != leftRookLocation && knight1Location != rightRookLocation && knight1Location != whiteBishopLocation && knight1Location != blackBishopLocation && knight1Location != queenLocation) canContinue = true;
 			}
 			canContinue = false;
 			int knight2Location = 0;
 			while (!canContinue)
 			{
-				knight2Location = new Random().Next(1, 8);
+				knight2Location = new Random().Next(1, 9);
 				if (knight2Location != kingLocation && knight2Location != leftRookLocation && knight2Location != rightRookLocation && knight2Location != whiteBishopLocation && knight2Location != blackBishopLocation && knight2Location != queenLocation && knight2Location != knight1Location) canContinue = true;
 			}
 
