@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 #if AI_TEST
 	public async void StartNewGame(bool isWhiteAI = true, bool isBlackAI = true) {
 #else
-	public async void StartNewGame(bool isWhiteAI = false, bool isBlackAI = false) {
+	public async void StartNewGame(bool isWhiteAI = false, bool isBlackAI = true) {
 #endif
 		game = new Game();
 
