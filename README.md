@@ -1,5 +1,11 @@
 # UnityChess
 
+This is work I did for the Projects in Existing Code
+The things that i worked on include:
+Added Chess960 as a setup option, to do this simply press the "New 960 Game" Button
+Changed the game so that it sets up the game to be you vs. the AI
+Included a Run Tests button, this does run the tests that I made, however you will not see them unless you are in the unity editor and look at the console
+
 UnityChess is a 3D Chess game built using Unity/C#.
 
 ![UnityChess demo](https://media.githubusercontent.com/media/ErkrodC/UnityChess/development/UnityChess.gif)
